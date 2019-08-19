@@ -1,0 +1,46 @@
+project.ext {
+
+    kotlinVersion = '1.3.10'
+    kotlinCoroutinesVersion = '1.2.1'
+    deeplinkScheme = 'whale'
+    applicationName = 'whaleRoute'
+
+    android = [
+            compileSdkVersion: 29,
+            minSdkVersion    : 14,
+            targetSdkVersion : 29,
+    ]
+
+    whale = [
+            whale_api       : project(":whale-api"),
+            whale_annotation: project(":whale-annotation")
+    ]
+
+    kapt = [
+            whale_processor       : project(":whale-processor")
+    ]
+
+
+    kotlin = [
+            kotlinx_coroutines_core   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoroutinesVersion}",
+            kotlinStdlibJdk8          : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}",
+            kotlinx_coroutines_android: "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlinCoroutinesVersion}"
+    ]
+
+    androidx = [
+            appcompat        : "androidx.appcompat:appcompat:1.0.2",
+            multidex         : "androidx.multidex:multidex:2.0.0",
+            constraint_layout: "androidx.constraintlayout:constraintlayout:1.1.2",
+            core_ktx         : "androidx.core:core-ktx:1.0.2",
+            material         : "com.google.android.material:material:1.1.0-alpha09"
+
+    ]
+
+    androidTest = [
+            espresso_core: "androidx.test.espresso:espresso-core:3.2.0"
+    ]
+
+    test = [
+            junit: 'junit:junit:4.12',
+    ]
+}

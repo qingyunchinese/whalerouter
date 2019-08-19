@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="LoginAppTheme" parent="@style/BaseAppTheme">
+        <!-- Customize your theme here. -->
+    </style>
+
+</resources>

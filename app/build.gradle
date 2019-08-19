@@ -1,0 +1,75 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    defaultConfig {
+        applicationId "com.android.whale.route.demo"
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
+        manifestPlaceholders = [deeplinkScheme: "${rootProject.ext.deeplinkScheme}"]
+        buildConfigField "String", "DEEP_LINK_SCHEME", "\"${rootProject.ext.deeplinkScheme}\""
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ROUTER_MODULE_NAME: project.getName(), DEPENDENCY_ROUTER_NAMES: "auth-component,setting-component"]
+            }
+        }
+
+        androidExtensions {
+            experimental = true
+        }
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            java {
+                srcDir "${buildDir.absolutePath}/generated/source/kaptKotlin/"
+            }
+        }
+    }
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation(project(":auth-component"))
+    implementation(project(":setting-component"))
+
+    // ------------------------------------------------------------------------
+    // - WhaleRouter
+    kapt rootProject.ext.kapt.values()
+    // ------------------------------------------------------------------------
+    // - Test
+    testImplementation rootProject.ext.test.values()
+
+    // ------------------------------------------------------------------------
+    // - AndroidTest
+    testImplementation rootProject.ext.androidTest.values()
+
+    // ------------------------------------------------------------------------
+    // - Support
+    implementation rootProject.ext.androidx.values()
+
+    // ------------------------------------------------------------------------
+    // - Kotlin
+    implementation rootProject.ext.kotlin.values()
+
+    // ------------------------------------------------------------------------
+}

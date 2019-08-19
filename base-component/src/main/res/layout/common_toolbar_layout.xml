@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto"
+       xmlns:tools="http://schemas.android.com/tools">
+
+    <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                tools:title="@string/app_name"
+                app:titleTextColor="@color/colorWhite"
+                android:layout_width="match_parent"
+                app:title="@string/app_name"
+                android:layout_height="?attr/actionBarSize">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/toolbar_title"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    tools:text="@string/app_name"
+                    tools:ignore="SpUsage"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"/>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+</merge>
+

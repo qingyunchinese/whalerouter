@@ -1,0 +1,19 @@
+<resources>
+
+    <string name="app_name">WhaleRouter</string>
+
+    <string name="main">MainPage</string>
+    <string name="login">LoginPage</string>
+    <string name="not_found">404Page</string>
+    <string name="detail">Detail</string>
+
+    <string name="appLogin">appLogin</string>
+
+    <string name="router_auth_component">Login[Auth-Component]</string>
+    <string name="router_setting_component">Setting[Setting-Component]</string>
+
+    <string name="router_dynamic_path">DynamicPath</string>
+
+    <string name="router_params">RouterParams</string>
+
+</resources>

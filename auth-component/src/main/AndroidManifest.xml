@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.android.whale.auth.component">
+
+    <application>
+        <activity
+                android:theme="@style/LoginAppTheme"
+                android:name=".ui.login.LoginActivity"
+                android:screenOrientation="portrait">
+        </activity>
+    </application>
+
+</manifest>
