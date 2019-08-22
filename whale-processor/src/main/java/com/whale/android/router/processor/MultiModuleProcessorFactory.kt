@@ -9,7 +9,7 @@ import javax.lang.model.util.Types
 @SupportedAnnotationTypes(value = [Constants.ROUTER_ANNOTATION_TYPE])
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedOptions(value = [Constants.KOTLIN_GENERATED_OPTION_NAME, Constants.KEY_MODULE_NAME, Constants.KEY_DEPENDENCY_ROUTER_NAMES])
-class MixModuleProcessorFactory : AbstractProcessor() {
+class MultiModuleProcessorFactory : AbstractProcessor() {
     //文件生成器
     lateinit var filer: Filer
     //日志打印类
@@ -19,7 +19,7 @@ class MixModuleProcessorFactory : AbstractProcessor() {
 
     var debug = true
 
-    private val processorImpls = mutableListOf<MixModuleAnnotationProcessor>()
+    private val processorImpls = mutableListOf<MultiModuleAnnotationProcessor>()
 
     @Synchronized
     override fun init(processingEnvironment: ProcessingEnvironment) {
@@ -31,7 +31,7 @@ class MixModuleProcessorFactory : AbstractProcessor() {
 
         gradleLogger = GradleLogger(processingEnvironment.messager, debug)
 
-        processorImpls.add(MixModuleRouterProcessor(gradleLogger, elementUtils, types))
+        processorImpls.add(MultiModuleRouterProcessor(gradleLogger, elementUtils, types))
     }
 
     @Synchronized

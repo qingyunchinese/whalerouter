@@ -8,4 +8,8 @@ import kotlin.annotation.*
 @MustBeDocumented
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FILE)
 @Retention(AnnotationRetention.BINARY)
-annotation class Router(val path: Array<String>, val requiredParams: Array<String> = [""])
+annotation class Router(
+    val path: Array<String>,
+    val requiredParams: Array<String> = [],
+    val requiredAuthor: Boolean = false
+)

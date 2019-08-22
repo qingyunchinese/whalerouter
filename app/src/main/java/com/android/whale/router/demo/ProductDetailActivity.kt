@@ -7,13 +7,11 @@ import com.whale.android.router.annotation.Router
 import com.whale.android.router.annotation.RouterField
 import kotlinx.android.synthetic.main.activity_product_detail.*
 
-@Router(path = ["detail"], requiredParams = ["pageTitle"])
+@Router(path = ["detail"], requiredParams = ["id", "name"], requiredAuthor = true)
 class ProductDetailActivity : BaseActivity() {
 
-    @RouterField(paramsName = "name", className = "String")
+    @RouterField(paramsName = "name")
     var pageTitle: String = ""
-
-
 
     override fun getLayoutId(): Int {
         return R.layout.activity_product_detail

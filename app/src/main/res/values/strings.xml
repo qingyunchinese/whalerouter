@@ -14,6 +14,10 @@
 
     <string name="router_dynamic_path">DynamicPath</string>
 
-    <string name="router_params">RouterParams</string>
+    <string name="router_params">WitchParams</string>
+    <string name="router_required_params">CheckRequiredParams</string>
+
+    <string name="router_redirect">Redirect</string>
+
 
 </resources>

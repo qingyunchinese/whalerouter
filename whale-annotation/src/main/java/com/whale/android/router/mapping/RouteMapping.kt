@@ -1,11 +1,12 @@
 package com.whale.android.router.mapping
 
 class RouteMapping(
-    var routeType: String,
+    var routeComponentType: String,
     var path: String,
     var destination: Class<*>,
-    var module: String? = null,
-    var requiredParams: Array<String>
+    var module: String,
+    var requiredParams: Array<String>,
+    var requiredAuthor: Boolean
 ) {
 
     override fun equals(other: Any?): Boolean {
@@ -14,25 +15,26 @@ class RouteMapping(
 
         other as RouteMapping
 
-        if (routeType != other.routeType) return false
+        if (routeComponentType != other.routeComponentType) return false
         if (path != other.path) return false
         if (destination != other.destination) return false
         if (module != other.module) return false
         if (!requiredParams.contentEquals(other.requiredParams)) return false
-
+        if (requiredAuthor != other.requiredAuthor) return false
         return true
     }
 
     override fun hashCode(): Int {
-        var result = routeType.hashCode()
+        var result = routeComponentType.hashCode()
         result = 31 * result + path.hashCode()
         result = 31 * result + destination.hashCode()
-        result = 31 * result + (module?.hashCode() ?: 0)
+        result = 31 * result + (module.hashCode())
+        result = 31 * result + (requiredAuthor.hashCode())
         result = 31 * result + requiredParams.contentHashCode()
         return result
     }
 
     fun cloneWithNewPath(path: String): RouteMapping {
-        return RouteMapping(routeType, path, destination, module, requiredParams)
+        return RouteMapping(routeComponentType, path, destination, module, requiredParams, requiredAuthor)
     }
 }

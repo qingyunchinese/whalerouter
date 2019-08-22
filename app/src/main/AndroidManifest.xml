@@ -34,6 +34,7 @@
 
         <activity
                 android:name="com.android.whale.router.demo.MainActivity"
+                android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
                 android:screenOrientation="portrait"/>
 
         <activity

@@ -5,20 +5,18 @@ import com.whale.android.router.annotation.Router
 import com.whale.android.router.mapping.RouterType
 import java.io.File
 import java.lang.StringBuilder
-import java.util.*
 import javax.lang.model.element.TypeElement
-import javax.lang.model.type.TypeKind
 import javax.lang.model.type.TypeMirror
 import javax.lang.model.util.Elements
 import javax.lang.model.util.Types
 import kotlin.collections.HashSet
 
 
-class MixModuleRouterProcessor(
+class MultiModuleRouterProcessor(
     private val gradleLogger: GradleLogger,
     private val elementUtils: Elements,
     private val types: Types
-) : MixModuleAnnotationProcessor {
+) : MultiModuleAnnotationProcessor {
 
     private val androidActivity: TypeMirror? by lazy {
         elementUtils.getTypeElement(RouterType.ACTIVITY)?.asType()
@@ -31,9 +29,6 @@ class MixModuleRouterProcessor(
     }
     private val androidContentProvider: TypeMirror? by lazy {
         elementUtils.getTypeElement(RouterType.CONTENT_PROVIDER)?.asType()
-    }
-    private val androidBroadcasterReceiver: TypeMirror? by lazy {
-        elementUtils.getTypeElement(RouterType.BROADCASTRECEIVER)?.asType()
     }
 
     private var ROUTER_MAPPING_CLASS = "WhaleRouterMapping"
@@ -65,9 +60,10 @@ class MixModuleRouterProcessor(
         generatedModuleKtFile =
             FileSpec.builder(Constants.ROUTER_ANNOTATION_CLASS_PACKAGE, getModuleMappingClassName(moduleName))
 
-        gradleLogger.debugMessage("$moduleName:MixModuleRouterProcessor--->startProcessAnnotation")
+        gradleLogger.debugMessage("$moduleName:MultiModuleRouterProcessor--->startProcessAnnotation")
 
-        generatedModuleKtFile.addImport("com.whale.android.router", "WhaleRouter")
+        generatedModuleKtFile
+            .addImport("com.whale.android.router", "WhaleService")
             .addImport("com.whale.android.router.mapping", "RouteMapping")
             .addImport("com.whale.android.router.mapping", "RouterType")
     }
@@ -79,15 +75,16 @@ class MixModuleRouterProcessor(
         typeElement: TypeElement
     ) {
 
-        gradleLogger.debugMessage("$moduleName:MixModuleRouterProcessor--->processAnnotation")
+        gradleLogger.debugMessage("$moduleName:MultiModuleRouterProcessor--->processAnnotation")
 
         val routerAnnotation = typeElement.getAnnotation(Router::class.java)
         val routerPathArray = routerAnnotation.path
         val routerType = getRouterType(typeElement.asType())
 
+        val requiredAuthor = routerAnnotation.requiredAuthor
+
         val requiredParams = routerAnnotation.requiredParams
         val requiredParamsFiledText = StringBuilder()
-
         requiredParams.forEach {
             if (requiredParamsFiledText.isEmpty()) {
                 requiredParamsFiledText.append("\"$it\"")
@@ -99,12 +96,18 @@ class MixModuleRouterProcessor(
         routerPathArray.forEach {
             val packageName = "${typeElement.qualifiedName}".replace(".${typeElement.simpleName}", "")
             val routerClass = ClassName(packageName, "${typeElement.simpleName}")
+            var statement =
+                "WhaleService.add(RouteMapping(%S,%S,%T::class.java,%S,arrayOf($requiredParamsFiledText),%L))"
+            if (requiredParamsFiledText.isEmpty()) {
+                statement = "WhaleService.add(RouteMapping(%S,%S,%T::class.java,%S,arrayOf<String>(),%L))"
+            }
             generatedKtMethod.addStatement(
-                "WhaleRouter.addRouterMapping(RouteMapping(%S,%S,%T::class.java,%S,arrayOf($requiredParamsFiledText)))",
+                statement,
                 routerType,
                 it,
                 routerClass,
-                moduleName
+                moduleName,
+                requiredAuthor
             )
         }
     }
@@ -116,7 +119,7 @@ class MixModuleRouterProcessor(
         generatedDirPath: String
     ) {
 
-        gradleLogger.debugMessage("$moduleName:MixModuleRouterProcessor--->endProcessAnnotation")
+        gradleLogger.debugMessage("$moduleName:MultiModuleRouterProcessor--->endProcessAnnotation")
 
         generatedModuleKtFile.addType(
             TypeSpec.classBuilder(getModuleMappingClassName(moduleName))
@@ -151,18 +154,9 @@ class MixModuleRouterProcessor(
             types.isSubtype(typeMirror, androidContentProvider) -> {
                 return RouterType.CONTENT_PROVIDER
             }
-            types.isSubtype(typeMirror, androidBroadcasterReceiver) -> {
-                return RouterType.BROADCASTRECEIVER
-            }
             else -> {
                 ""
             }
-        }
-    }
-
-    private fun validateTypeNotIn(var1: TypeMirror, var2: Set<TypeKind>) {
-        if (var2.contains(var1.kind)) {
-            throw IllegalArgumentException(var1.toString())
         }
     }
 

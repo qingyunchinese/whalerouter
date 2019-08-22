@@ -2,7 +2,7 @@ package com.whale.android.router.processor
 
 import javax.lang.model.element.TypeElement
 
-interface MixModuleAnnotationProcessor {
+interface MultiModuleAnnotationProcessor {
 
     fun startProcessAnnotation(moduleName: String, mainModule: Boolean, dependencyModuleNames: UniqueValueList)
 

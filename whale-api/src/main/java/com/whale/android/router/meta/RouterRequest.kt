@@ -1,22 +1,20 @@
 package com.whale.android.router.meta
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.SparseArray
 import androidx.core.app.ActivityOptionsCompat
-import com.whale.android.router.WhaleRouter
-import com.android.whale.router.api.interceptor.NavigateCallback
 import java.io.Serializable
 import java.util.*
 
 
-class WRouteMeta(val routerPath: String) {
+class RouterRequest(val routerPath: String) {
 
     val extra: Bundle by lazy {
         Bundle()
     }
 
+    private var requestCode = -1
     private var flags = -1
     private var enterAnim = -1
     private var exitAnim = -1
@@ -40,21 +38,15 @@ class WRouteMeta(val routerPath: String) {
         this.optionsCompat = activityOptionsCompat
     }
 
-    fun getEnterAnim(): Int {
-        return enterAnim
-    }
+    fun getEnterAnim(): Int = enterAnim
 
-    fun getFlags(): Int {
-        return flags
-    }
+    fun getFlags(): Int = flags
 
-    fun getExitAnim(): Int {
-        return exitAnim
-    }
+    fun getExitAnim(): Int = exitAnim
 
-    fun getAction(): String? {
-        return action
-    }
+    fun getAction(): String? = action
+
+    fun getRequestCode(): Int = requestCode
 
     fun withBundle(key: String, value: Bundle) = apply {
         extra.putBundle(key, value)
@@ -148,9 +140,4 @@ class WRouteMeta(val routerPath: String) {
     fun withParcelable(key: String, value: Parcelable) = apply {
         extra.putParcelable(key, value)
     }
-
-    fun navigate(context: Context? = null, requestCode: Int = -1, callback: NavigateCallback? = null) {
-        WhaleRouter.navigate(this, requestCode, context, callback)
-    }
-
 }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import com.android.whale.base.component.BaseActivity
 import com.whale.android.router.WhaleRouter
+import com.whale.android.router.extension.navigate
 
 class SplashActivity : BaseActivity() {
 

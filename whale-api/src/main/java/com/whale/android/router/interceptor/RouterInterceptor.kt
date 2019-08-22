@@ -1,9 +1,15 @@
-package com.android.whale.router.api.interceptor
+package com.whale.android.router.interceptor
 
-import com.whale.android.router.meta.WRouteMeta
+import com.whale.android.router.meta.RouterRequest
+import com.whale.android.router.meta.RouterResponse
 
 interface RouterInterceptor {
 
-    fun interceptorRoute(path: String, group: String, routeMeta: WRouteMeta): Boolean = false
+    fun intercept(chain: Chain): RouterResponse
 
+    interface Chain {
+        fun proceed(request: RouterRequest): RouterResponse
+
+        fun request(): RouterRequest
+    }
 }

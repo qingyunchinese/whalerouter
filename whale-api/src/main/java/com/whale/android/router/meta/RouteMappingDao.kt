@@ -2,21 +2,21 @@ package com.whale.android.router.meta
 
 import com.whale.android.router.mapping.RouteMapping
 
-class RouteMappingCollection {
+class RouteMappingDao {
 
     private val routeMappingCollection = hashMapOf<String, RouteMapping>()
 
-    fun addRouteMapping(routeMapping: RouteMapping) {
+    fun addRouterMapping(routeMapping: RouteMapping) {
         val key = getRouteMappingKey(routeMapping)
         routeMappingCollection[key] = routeMapping
     }
 
-    fun removeRouteMapping(routeMapping: RouteMapping) {
+    fun removeRouterMapping(routeMapping: RouteMapping) {
         val key = getRouteMappingKey(routeMapping)
         routeMappingCollection.remove(key)
     }
 
-    fun queryRouteMapping(path: String): RouteMapping? {
+    fun queryRouterMapping(path: String): RouteMapping? {
         return routeMappingCollection[path]
     }
 
