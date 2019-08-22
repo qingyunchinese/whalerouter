@@ -25,7 +25,6 @@ class RouterResponse(val request: RouterRequest, val routerMapping: RouteMapping
         val LOST = 500
         val ARRIVED = 200
         val BAD_PARAMS = 400
-        val UNAUTHORIZED = 401
     }
 
     fun getComponent() = routerMapping?.destination
