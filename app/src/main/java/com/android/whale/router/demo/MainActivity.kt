@@ -2,11 +2,13 @@ package com.android.whale.router.demo
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.android.whale.base.component.AppCompatToolbar
 import com.android.whale.base.component.BaseActivity
 import com.whale.android.router.WhaleRouter
 import com.whale.android.router.WhaleService
 import com.whale.android.router.annotation.Router
+import com.whale.android.router.extension.getComponent
 import com.whale.android.router.extension.navigate
 
 @Router(path = ["home"])
@@ -39,7 +41,11 @@ class MainActivity : BaseActivity() {
         WhaleRouter.build("sign").navigate(this)
     }
 
+    /**
+     * @see WhaleRouterManager.authenticate
+     */
     fun routerParams(@Suppress("UNUSED_PARAMETER") view: View) {
+        WhaleRouterManager.isAuthenticated = true
         WhaleRouter.build("detail")
             .withString("pageTitle", "WithParams")
             .withInt("id", 1)
@@ -49,18 +55,24 @@ class MainActivity : BaseActivity() {
             .navigate(this)
     }
 
-    fun routerHasRequiredParams(@Suppress("UNUSED_PARAMETER") view: View){
+    /**
+     * @see WhaleApplication.authenticate
+     */
+    fun routerHasRequiredParams(@Suppress("UNUSED_PARAMETER") view: View) {
+        WhaleRouterManager.isAuthenticated = false
         WhaleRouter.build("detail")
+            .withInt("id", 1)
+            .withString("name", "Android")
             .withString("pageTitle", "CheckRouterParams")
             .navigate(this)
     }
 
-    /**
-     * @see WhaleApplication.intercept
-     */
-    fun routerRedirect(@Suppress("UNUSED_PARAMETER") view: View){
-        WhaleRouter.build("detail")
-            .withString("pageTitle", "CheckRouterParams")
-            .navigate(this)
+
+    fun routerRedirect(@Suppress("UNUSED_PARAMETER") view: View) {
+        WhaleRouterManager.isAuthenticated = false
+        val routerResponse = WhaleRouter.build("setting/preference")
+            .withBoolean("isVideo", false)
+            .withLong("position", 123456).getComponent()
+        Toast.makeText(this, "${routerResponse.routerMapping?.destination?.canonicalName}", Toast.LENGTH_LONG).show()
     }
 }

@@ -10,6 +10,8 @@ import com.whale.android.router.meta.RouterResponse
 
 object WhaleRouterManager : RouterInterceptor, RouterAuthenticator {
 
+    var isAuthenticated = false
+
     fun init(application: Application) {
         WhaleRouter.init(application, "whale")
         WhaleRouter.addRouteInterceptor(this)
@@ -24,14 +26,10 @@ object WhaleRouterManager : RouterInterceptor, RouterAuthenticator {
     }
 
     override fun authenticate(response: RouterResponse): RouterRequest? {
-        return if (isAuthenticated()) {
+        return if (isAuthenticated) {
             null
         } else {
             WhaleRouter.build("login")
         }
-    }
-
-    private fun isAuthenticated(): Boolean {
-        return false
     }
 }

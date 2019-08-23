@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.whale.android.router.WhaleRouter
 import com.whale.android.router.callback.NavigateCallback
 import com.whale.android.router.meta.RouterRequest
+import com.whale.android.router.meta.RouterResponse
 
 fun RouterRequest.navigate(
     fragment: Fragment,
@@ -26,4 +27,8 @@ fun RouterRequest.navigate(
     callback: NavigateCallback? = null
 ) {
     WhaleRouter.navigate(context, this, callback)
+}
+
+fun RouterRequest.getComponent():RouterResponse {
+   return  WhaleRouter.getComponent(this)
 }

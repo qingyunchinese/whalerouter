@@ -91,9 +91,6 @@ object WhaleRouter {
                         callback?.notFound()
                     }
                     RouterResponse.ARRIVED -> {
-                        routerResponse.routerPath().let {
-                            Utils.showDebugToast(globeContext, "routerPath:$it arrived")
-                        }
                         proceedComponent(realContext, routerResponse, callback)
                     }
                     RouterResponse.BAD_PARAMS -> {
@@ -142,4 +139,8 @@ object WhaleRouter {
         }
     }
 
+    fun getComponent(routerRequest: RouterRequest): RouterResponse {
+        val routerInterceptorChain = getRouterInterceptorChain(routerRequest)
+        return routerInterceptorChain.proceed(request = routerRequest)
+    }
 }

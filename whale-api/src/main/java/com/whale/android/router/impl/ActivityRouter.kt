@@ -9,6 +9,7 @@ import com.whale.android.router.Constants
 import com.whale.android.router.WhaleRouter
 import com.whale.android.router.callback.NavigateCallback
 import com.whale.android.router.meta.RouterResponse
+import com.whale.android.router.utils.Utils
 
 class ActivityRouter : RouterComponent {
 
@@ -29,9 +30,17 @@ class ActivityRouter : RouterComponent {
         action.let {
             intent.setAction(action)
         }
-        startActivity(context, intent, routeRequest.getRequestCode(), intent.extras)
+        try {
+            startActivity(context, intent, routeRequest.getRequestCode(), intent.extras)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return
+        }
         callback?.let {
             it.arrived(routerResponse)
+        }
+        routerResponse.routerPath().let {
+            Utils.showDebugToast(context, "routerPath:$it arrived")
         }
     }
 
