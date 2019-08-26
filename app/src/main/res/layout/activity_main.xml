@@ -110,11 +110,11 @@
             <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     tools:ignore="HardcodedText"
-                    android:text="Redirect:"
+                    android:text="Fragment:"
                     android:layout_height="wrap_content"/>
 
             <com.google.android.material.button.MaterialButton
-                    android:text="@string/router_redirect"
+                    android:text="@string/router_get_component"
                     android:layout_width="match_parent"
                     app:rippleColor="@color/colorWhite"
                     android:gravity="center"
@@ -122,7 +122,7 @@
                     android:textAllCaps="false"
                     android:textSize="14dp"
                     tools:ignore="SpUsage"
-                    android:onClick="routerRedirect"
+                    android:onClick="routerFragment"
                     android:layout_height="50dp"/>
 
         </LinearLayout>

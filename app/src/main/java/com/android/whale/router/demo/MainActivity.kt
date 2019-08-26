@@ -8,7 +8,7 @@ import com.android.whale.base.component.BaseActivity
 import com.whale.android.router.WhaleRouter
 import com.whale.android.router.WhaleService
 import com.whale.android.router.annotation.Router
-import com.whale.android.router.extension.getComponent
+import com.whale.android.router.extension.instance
 import com.whale.android.router.extension.navigate
 
 @Router(path = ["home"])
@@ -68,11 +68,16 @@ class MainActivity : BaseActivity() {
     }
 
 
-    fun routerRedirect(@Suppress("UNUSED_PARAMETER") view: View) {
-        WhaleRouterManager.isAuthenticated = false
+    fun routerFragment(@Suppress("UNUSED_PARAMETER") view: View) {
         val routerResponse = WhaleRouter.build("setting/preference")
             .withBoolean("isVideo", false)
-            .withLong("position", 123456).getComponent()
-        Toast.makeText(this, "${routerResponse.routerMapping?.destination?.canonicalName}", Toast.LENGTH_LONG).show()
+            .withLong("position", 123456).instance(this)
+        routerResponse.fragment?.let {
+            Toast.makeText(
+                this,
+                "Fragment:${it.javaClass.simpleName},Params:${it.arguments?.keySet()?.toList().toString()}",
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
 }

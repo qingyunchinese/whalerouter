@@ -20,8 +20,7 @@ object WhaleRouterManager : RouterInterceptor, RouterAuthenticator {
     override fun intercept(chain: RouterInterceptor.Chain): RouterResponse {
         val routerRequest = chain.request()
         routerRequest.withBoolean("extra", true)
-        val routerResponse = chain.proceed(routerRequest)
-        return routerResponse
+        return chain.proceed(routerRequest)
     }
 
     override fun authenticate(response: RouterResponse): RouterRequest? {

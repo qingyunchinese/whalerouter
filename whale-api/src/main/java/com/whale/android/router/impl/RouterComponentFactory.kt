@@ -15,16 +15,10 @@ class RouterComponentFactory {
                 cacheRouterComponent[routerComponentType]
             }
             RouterType.FRAGMENT -> {
-                null
-            }
-            RouterType.SERVICE -> {
                 if (!cacheRouterComponent.containsKey(routerComponentType)) {
-                    cacheRouterComponent[routerComponentType] = ServiceRouter()
+                    cacheRouterComponent[routerComponentType] = FragmentRouter()
                 }
-                return ServiceRouter()
-            }
-            RouterType.CONTENT_PROVIDER -> {
-                null
+                cacheRouterComponent[routerComponentType]
             }
             else -> {
                 null

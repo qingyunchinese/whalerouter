@@ -80,34 +80,43 @@ object WhaleRouter {
     ) {
         runInMainThread(Runnable {
             try {
-                val realContext = context ?: globeContext
-                val routerInterceptorChain = getRouterInterceptorChain(routerRequest)
-                val routerResponse = routerInterceptorChain.proceed(request = routerRequest)
-                when (routerResponse.statues) {
-                    RouterResponse.LOST -> {
-                        routerResponse.routerPath().let {
-                            Utils.showDebugToast(globeContext, "routerPath:$it lost")
-                        }
-                        callback?.notFound()
-                    }
-                    RouterResponse.ARRIVED -> {
-                        proceedComponent(realContext, routerResponse, callback)
-                    }
-                    RouterResponse.BAD_PARAMS -> {
-                        routerResponse.routerPath().let {
-                            Utils.showDebugToast(
-                                globeContext,
-                                "routerPath:$it not match requiredParams:${routerResponse.getMisMatchParams()}"
-                            )
-                        }
-                        callback?.notFound()
-                    }
-                }
+                executeRouterRequest(context, routerRequest, callback)
             } catch (e: Exception) {
                 e.printStackTrace()
                 callback?.error(e)
             }
         })
+    }
+
+    private fun executeRouterRequest(
+        context: Context?,
+        routerRequest: RouterRequest,
+        callback: NavigateCallback?
+    ): RouterResponse {
+        val realContext = context ?: globeContext
+        val routerInterceptorChain = getRouterInterceptorChain(routerRequest)
+        val routerResponse = routerInterceptorChain.proceed(request = routerRequest)
+        when (routerResponse.statues) {
+            RouterResponse.LOST -> {
+                routerResponse.routerPath().let {
+                    Utils.showDebugToast(globeContext, "routerPath:$it lost")
+                }
+                callback?.notFound()
+            }
+            RouterResponse.ARRIVED -> {
+                proceedComponent(realContext, routerResponse, callback)
+            }
+            RouterResponse.BAD_PARAMS -> {
+                routerResponse.routerPath().let {
+                    Utils.showDebugToast(
+                        globeContext,
+                        "routerPath:$it not match requiredParams:${routerResponse.getMisMatchParams()}"
+                    )
+                }
+                callback?.notFound()
+            }
+        }
+        return routerResponse
     }
 
     private fun proceedComponent(
@@ -139,8 +148,12 @@ object WhaleRouter {
         }
     }
 
-    fun getComponent(routerRequest: RouterRequest): RouterResponse {
-        val routerInterceptorChain = getRouterInterceptorChain(routerRequest)
-        return routerInterceptorChain.proceed(request = routerRequest)
+    fun instance(
+        context: Context?,
+        routerRequest: RouterRequest,
+        callback: NavigateCallback? = null
+    ): RouterResponse {
+        val realContext = context ?: globeContext
+        return executeRouterRequest(realContext, routerRequest, callback)
     }
 }

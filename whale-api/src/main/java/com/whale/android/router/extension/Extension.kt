@@ -23,12 +23,16 @@ fun RouterRequest.navigate(
 }
 
 fun RouterRequest.navigate(
-    context: Context?=null,
+    context: Context? = null,
     callback: NavigateCallback? = null
 ) {
     WhaleRouter.navigate(context, this, callback)
 }
 
-fun RouterRequest.getComponent():RouterResponse {
-   return  WhaleRouter.getComponent(this)
+fun RouterRequest.instance(
+    context: Context? = null,
+    callback: NavigateCallback? = null
+): RouterResponse {
+    return WhaleRouter.instance(context, this, callback)
 }
+

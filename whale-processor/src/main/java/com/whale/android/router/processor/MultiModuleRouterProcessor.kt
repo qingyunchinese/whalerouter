@@ -21,14 +21,8 @@ class MultiModuleRouterProcessor(
     private val androidActivity: TypeMirror? by lazy {
         elementUtils.getTypeElement(RouterType.ACTIVITY)?.asType()
     }
-    private val androidService: TypeMirror? by lazy {
-        elementUtils.getTypeElement(RouterType.SERVICE)?.asType()
-    }
     private val androidSupportFragment: TypeMirror? by lazy {
         elementUtils.getTypeElement(RouterType.FRAGMENT)?.asType()
-    }
-    private val androidContentProvider: TypeMirror? by lazy {
-        elementUtils.getTypeElement(RouterType.CONTENT_PROVIDER)?.asType()
     }
 
     private var ROUTER_MAPPING_CLASS = "WhaleRouterMapping"
@@ -145,14 +139,8 @@ class MultiModuleRouterProcessor(
             types.isSubtype(typeMirror, androidActivity) -> {
                 return RouterType.ACTIVITY
             }
-            types.isSubtype(typeMirror, androidService) -> {
-                return RouterType.SERVICE
-            }
             types.isSubtype(typeMirror, androidSupportFragment) -> {
                 return RouterType.FRAGMENT
-            }
-            types.isSubtype(typeMirror, androidContentProvider) -> {
-                return RouterType.CONTENT_PROVIDER
             }
             else -> {
                 ""
