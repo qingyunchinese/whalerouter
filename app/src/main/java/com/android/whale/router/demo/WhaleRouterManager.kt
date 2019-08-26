@@ -2,7 +2,6 @@ package com.android.whale.router.demo
 
 import android.app.Application
 import com.whale.android.router.WhaleRouter
-import com.whale.android.router.extension.navigate
 import com.whale.android.router.impl.RouterAuthenticator
 import com.whale.android.router.interceptor.RouterInterceptor
 import com.whale.android.router.meta.RouterRequest
