@@ -11,7 +11,7 @@ class GradleLogger(private val logMessager: Messager, private val debug: Boolean
 
     fun debugMessage(format: String, vararg args: Any) {
         if (debug) {
-            logMessager.printMessage(Diagnostic.Kind.WARNING, String.format(format, *args))
+            logMessager.printMessage(Diagnostic.Kind.NOTE, String.format(format, *args))
         }
 
     }
