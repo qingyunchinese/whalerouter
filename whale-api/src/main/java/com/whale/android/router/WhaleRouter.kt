@@ -30,17 +30,21 @@ object WhaleRouter {
     private lateinit var globeContext: Context
     private lateinit var handler: Handler
     private lateinit var appSchema: String
-    var logger: ILogger =
-        AndroidLogger(BuildConfig.DEBUG)
+    var debugMode: Boolean = false
+
+    lateinit var logger: ILogger
+
     private val routerComponentFactory: RouterComponentFactory by lazy {
         RouterComponentFactory()
     }
 
     @Synchronized
-    fun init(application: Application, schema: String): Boolean {
+    fun init(application: Application, schema: String, debug: Boolean = false): Boolean {
         appSchema = schema
         globeContext = application
         hasInit = true
+        debugMode = debug
+        logger = AndroidLogger(debugMode)
         handler = Handler(Looper.getMainLooper())
         WhaleService.startService()
         return true
