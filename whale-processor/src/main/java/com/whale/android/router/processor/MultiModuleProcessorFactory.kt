@@ -37,11 +37,6 @@ class MultiModuleProcessorFactory : AbstractProcessor() {
     @Synchronized
     override fun process(typeElements: Set<TypeElement>, roundEnvironment: RoundEnvironment): Boolean {
 
-        val kotlinGeneratedDir = processingEnv.options[Constants.KOTLIN_GENERATED_OPTION_NAME] ?: run {
-            gradleLogger.errorMessage("Can't find the target directory for generated Kotlin files.")
-            return false
-        }
-
         val moduleName = processingEnv.options[Constants.KEY_MODULE_NAME] ?: run {
             gradleLogger.errorMessage("Can't find module name.")
             return false
@@ -59,7 +54,6 @@ class MultiModuleProcessorFactory : AbstractProcessor() {
             }
         }
 
-        gradleLogger.debugMessage(kotlinGeneratedDir)
         gradleLogger.debugMessage(moduleName)
 
         processorImpls.forEach { annotationProcessor ->
@@ -87,7 +81,7 @@ class MultiModuleProcessorFactory : AbstractProcessor() {
                         moduleName,
                         mainModule,
                         dependencyModuleNameList,
-                        kotlinGeneratedDir
+                        filer
                     )
                 }
             }

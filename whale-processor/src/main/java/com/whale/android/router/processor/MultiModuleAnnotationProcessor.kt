@@ -1,5 +1,6 @@
 package com.whale.android.router.processor
 
+import javax.annotation.processing.Filer
 import javax.lang.model.element.TypeElement
 
 interface MultiModuleAnnotationProcessor {
@@ -17,7 +18,7 @@ interface MultiModuleAnnotationProcessor {
         moduleName: String,
         mainModule: Boolean,
         dependencyModuleNames: UniqueValueList,
-        generatedDirPath: String
+        generatedFiler: Filer
     )
 
     fun getSupportAnnotation(): Class<out Annotation>

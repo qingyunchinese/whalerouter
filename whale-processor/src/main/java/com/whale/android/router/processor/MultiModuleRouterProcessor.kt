@@ -5,6 +5,7 @@ import com.whale.android.router.annotation.Router
 import com.whale.android.router.mapping.RouterType
 import java.io.File
 import java.lang.StringBuilder
+import javax.annotation.processing.Filer
 import javax.lang.model.element.TypeElement
 import javax.lang.model.type.TypeMirror
 import javax.lang.model.util.Elements
@@ -110,7 +111,7 @@ class MultiModuleRouterProcessor(
         moduleName: String,
         mainModule: Boolean,
         dependencyModuleNames: UniqueValueList,
-        generatedDirPath: String
+        generatedFiler: Filer
     ) {
 
         gradleLogger.debugMessage("$moduleName:MultiModuleRouterProcessor--->endProcessAnnotation")
@@ -121,13 +122,9 @@ class MultiModuleRouterProcessor(
                 .addFunction(generatedKtMethod.addModifiers(KModifier.OVERRIDE).build()).build()
         )
 
-        val sourceFile = File(generatedDirPath, "").apply {
-            parentFile.mkdirs()
-        }
+        generatedModuleKtFile.build().writeTo(generatedFiler)
 
-        generatedModuleKtFile.build().writeTo(sourceFile)
-
-        buildRouterMappingInitFile(moduleName, mainModule, dependencyModuleNames, generatedDirPath)
+        buildRouterMappingInitFile(moduleName, mainModule, dependencyModuleNames, generatedFiler)
     }
 
     override fun getSupportAnnotation(): Class<out Annotation> {
@@ -167,7 +164,7 @@ class MultiModuleRouterProcessor(
         moduleName: String,
         mainModule: Boolean,
         dependencyModuleNames: UniqueValueList,
-        generatedDirPath: String
+        generatedFiler: Filer
     ) {
 
         if (!mainModule) return
@@ -191,11 +188,7 @@ class MultiModuleRouterProcessor(
                 .build()
         )
 
-        val sourceFile = File(generatedDirPath, "").apply {
-            parentFile.mkdirs()
-        }
-
-        generatedRouterInitKtFile.build().writeTo(sourceFile)
+        generatedRouterInitKtFile.build().writeTo(generatedFiler)
     }
 
 }
