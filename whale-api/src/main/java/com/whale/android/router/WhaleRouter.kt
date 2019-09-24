@@ -131,9 +131,6 @@ object WhaleRouter {
         val routerComponentType = routerResponse.routerType()!!
         val routerComponent = routerComponentFactory.getRouterComponent(routerComponentType)
         routerComponent?.startComponent(context, routerResponse, callback)
-        callback?.let {
-            callback.notFound()
-        }
     }
 
     private fun getRouterInterceptorChain(routerRequest: RouterRequest): RouterInterceptorChain {

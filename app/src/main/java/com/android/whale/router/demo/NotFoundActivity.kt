@@ -5,7 +5,7 @@ import com.android.whale.base.component.AppCompatToolbar
 import com.android.whale.base.component.BaseActivity
 import com.whale.android.router.annotation.Router
 
-@Router(path = ["notfound","404"])
+@Router(path = ["notfound","404"],description = "xxx")
 class NotFoundActivity : BaseActivity() {
 
     override fun getLayoutId(): Int {

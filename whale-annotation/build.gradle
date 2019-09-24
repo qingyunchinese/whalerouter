@@ -1,22 +1,99 @@
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenCentral()
+}
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
+
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-buildscript {
-    ext.kotlin_version = '1.3.31'
+uploadArchives {
     repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        def properties = new Properties()
+        def inputStream = project.rootProject.file('local.properties').newDataInputStream()
+        properties.load( inputStream )
+
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: properties.getProperty("ossrhUsername"), password: properties.getProperty("ossrhPassword"))
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: properties.getProperty("ossrhUsername"), password: properties.getProperty("ossrhPassword"))
+            }
+
+            pom.project {  
+                groupId  'com.github.qingyunchinese'
+                artifactId 'router-annotation'
+                version MavenVersion
+                name project.name
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'Android Router Annotation Library'
+                url 'https://github.com/qingyunchinese/whalerouter'
+
+                scm {
+                    connection 'scm:git:git@github.com/qingyunchinese/whalerouter'
+                    developerConnection 'scm:git:git@github.com/qingyunchinese/whalerouter'
+                    url 'https://github.com/qingyunchinese/whalerouter'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'andrew'
+                        name 'qingyun'
+                        email '419254872@qq.com'
+                    }
+                }
+            }
+        }
     }
 }
-repositories {
-    mavenCentral()
+
+def isReleaseBuild() {
+    return MavenVersion.contains("SNAPSHOT")
+}
+
+signing {
+    required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
 }

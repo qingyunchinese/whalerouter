@@ -10,6 +10,7 @@ import kotlin.annotation.*
 @Retention(AnnotationRetention.BINARY)
 annotation class Router(
     val path: Array<String>,
+    val description: String="",
     val requiredParams: Array<String> = [],
     val requiredAuthor: Boolean = false
 )
