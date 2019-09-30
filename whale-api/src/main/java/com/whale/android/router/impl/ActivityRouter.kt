@@ -13,7 +13,15 @@ import com.whale.android.router.utils.Utils
 
 class ActivityRouter : RouterComponent {
 
-    override fun startComponent(context: Context, routerResponse: RouterResponse, callback: NavigateCallback?) {
+    override fun startComponent(
+        context: Context,
+        routerResponse: RouterResponse,
+        directlyOpen: Boolean,
+        callback: NavigateCallback?
+    ) {
+        if (!directlyOpen) {
+            return
+        }
         val routeMapping = routerResponse.routerMapping!!
         val routeRequest = routerResponse.request
         val intent = Intent(context, routeMapping.destination)
@@ -36,9 +44,7 @@ class ActivityRouter : RouterComponent {
             e.printStackTrace()
             return
         }
-        callback?.let {
-            it.arrived(routerResponse)
-        }
+        callback?.arrived(routerResponse)
         routerResponse.routerPath().let {
             Utils.showDebugToast(context, "routerPath:$it arrived")
         }

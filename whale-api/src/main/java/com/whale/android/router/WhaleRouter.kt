@@ -6,7 +6,6 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
-import com.whale.android.router.api.BuildConfig
 import com.whale.android.router.callback.NavigateCallback
 import com.whale.android.router.impl.RouterAuthenticator
 import com.whale.android.router.impl.RouterComponentFactory
@@ -84,7 +83,7 @@ object WhaleRouter {
     ) {
         runInMainThread(Runnable {
             try {
-                executeRouterRequest(context, routerRequest, callback)
+                executeRouterRequest(context, routerRequest, true, callback)
             } catch (e: Exception) {
                 e.printStackTrace()
                 callback?.error(e)
@@ -95,6 +94,7 @@ object WhaleRouter {
     private fun executeRouterRequest(
         context: Context?,
         routerRequest: RouterRequest,
+        directlyOpen: Boolean = true,
         callback: NavigateCallback?
     ): RouterResponse {
         val realContext = context ?: globeContext
@@ -108,7 +108,7 @@ object WhaleRouter {
                 callback?.notFound()
             }
             RouterResponse.ARRIVED -> {
-                proceedComponent(realContext, routerResponse, callback)
+                proceedComponent(realContext, routerResponse,directlyOpen, callback)
             }
             RouterResponse.BAD_PARAMS -> {
                 routerResponse.routerPath().let {
@@ -126,11 +126,12 @@ object WhaleRouter {
     private fun proceedComponent(
         context: Context,
         routerResponse: RouterResponse,
+        directlyOpen: Boolean = true,
         callback: NavigateCallback?
     ) {
         val routerComponentType = routerResponse.routerType()!!
         val routerComponent = routerComponentFactory.getRouterComponent(routerComponentType)
-        routerComponent?.startComponent(context, routerResponse, callback)
+        routerComponent?.startComponent(context, routerResponse, directlyOpen,callback)
     }
 
     private fun getRouterInterceptorChain(routerRequest: RouterRequest): RouterInterceptorChain {
@@ -155,6 +156,6 @@ object WhaleRouter {
         callback: NavigateCallback? = null
     ): RouterResponse {
         val realContext = context ?: globeContext
-        return executeRouterRequest(realContext, routerRequest, callback)
+        return executeRouterRequest(realContext, routerRequest, false, callback)
     }
 }

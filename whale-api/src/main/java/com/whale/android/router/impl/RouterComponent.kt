@@ -9,6 +9,7 @@ interface RouterComponent {
     fun startComponent(
         context: Context,
         routerResponse: RouterResponse,
+        directlyOpen: Boolean = false,
         callback: NavigateCallback? = null
     )
 

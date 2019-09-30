@@ -4,13 +4,13 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import com.whale.android.router.callback.NavigateCallback
 import com.whale.android.router.meta.RouterResponse
-import java.lang.Exception
 
 class FragmentRouter : RouterComponent {
 
     override fun startComponent(
         context: Context,
         routerResponse: RouterResponse,
+        directlyOpen: Boolean,
         callback: NavigateCallback?
     ) {
         try {
