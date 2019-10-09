@@ -39,7 +39,7 @@ class ActivityRouter : RouterComponent {
             intent.setAction(action)
         }
         try {
-            startActivity(context, intent, routeRequest.getRequestCode(), intent.extras)
+            startActivity(context, intent, routeRequest.getRequestCode())
         } catch (e: Exception) {
             e.printStackTrace()
             return
