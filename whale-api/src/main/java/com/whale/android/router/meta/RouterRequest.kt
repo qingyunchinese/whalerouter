@@ -25,6 +25,10 @@ class RouterRequest(val routerPath: String) {
         this.action = action
     }
 
+    fun withRequestCode(requestCode: Int) = apply {
+        this.requestCode = requestCode
+    }
+
     fun addFlag(flags: Int) = apply {
         this.flags = this.flags or flags
     }
