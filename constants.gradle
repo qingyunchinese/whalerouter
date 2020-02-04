@@ -12,13 +12,13 @@ project.ext {
     ]
 
     whale = [
-            whale_api       : "com.github.qingyunchinese:router-api:0.0.2-SNAPSHOT",
-            whale_annotation: "com.github.qingyunchinese:router-annotation:0.0.2-SNAPSHOT"
+            whale_api       : "com.github.qingyunchinese:router-api:0.0.4-SNAPSHOT",
+            whale_annotation: "com.github.qingyunchinese:router-annotation:0.0.4-SNAPSHOT"
 
          ]
 
     kapt = [
-            whale_processor       : "com.github.qingyunchinese:router-processor:0.0.2-SNAPSHOT"
+            whale_processor       : "com.github.qingyunchinese:router-processor:0.0.4-SNAPSHOT"
     ]
 
 
