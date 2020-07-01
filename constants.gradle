@@ -1,6 +1,6 @@
 project.ext {
 
-    kotlinVersion = '1.3.10'
+    kotlinVersion = '1.3.61'
     kotlinCoroutinesVersion = '1.2.1'
     deeplinkScheme = 'whale'
     applicationName = 'whaleRoute'
@@ -12,13 +12,13 @@ project.ext {
     ]
 
     whale = [
-            whale_api       : "com.github.qingyunchinese:router-api:0.0.4-SNAPSHOT",
-            whale_annotation: "com.github.qingyunchinese:router-annotation:0.0.4-SNAPSHOT"
+            whale_api       : "com.github.qingyunchinese:router-api:0.0.6-SNAPSHOT",
+            whale_annotation: "com.github.qingyunchinese:router-annotation:0.0.6-SNAPSHOT"
 
          ]
 
     kapt = [
-            whale_processor       : "com.github.qingyunchinese:router-processor:0.0.4-SNAPSHOT"
+            whale_processor       : "com.github.qingyunchinese:router-processor:0.0.6-SNAPSHOT"
     ]
 
 
