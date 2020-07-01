@@ -118,6 +118,11 @@ class LoginActivity : BaseActivity() {
     private fun showLoginFailed(@StringRes errorString: Int) {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
     }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.activity_stay, R.anim.activity_slide_bottom_out)
+    }
 }
 
 /**

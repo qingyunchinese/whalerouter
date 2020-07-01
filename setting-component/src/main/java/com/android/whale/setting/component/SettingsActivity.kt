@@ -31,4 +31,9 @@ class SettingsActivity : BaseActivity() {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
         }
     }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.activity_fake_anim,R.anim.activity_slide_right_out)
+    }
 }

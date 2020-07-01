@@ -25,11 +25,15 @@ class MainActivity : BaseActivity() {
     }
 
     fun authComponent(@Suppress("UNUSED_PARAMETER") view: View) {
-        WhaleRouter.build("login").navigate(this)
+        WhaleRouter.build("login")
+            .withTransition(R.anim.activity_slide_bottom_in,R.anim.activity_fake_anim)
+            .navigate(this)
     }
 
     fun settingComponent(@Suppress("UNUSED_PARAMETER") view: View) {
-        WhaleRouter.build("setting").navigate(this)
+        WhaleRouter.build("setting")
+            .withTransition(R.anim.activity_slide_right_in,R.anim.activity_fake_anim)
+            .navigate(this)
     }
 
     fun dynamicLogin(@Suppress("UNUSED_PARAMETER") view: View) {
@@ -75,7 +79,8 @@ class MainActivity : BaseActivity() {
         routerResponse.fragment?.let {
             Toast.makeText(
                 this,
-                "Fragment:${it.javaClass.simpleName},Params:${it.arguments?.keySet()?.toList().toString()}",
+                "Fragment:${it.javaClass.simpleName},Params:${it.arguments?.keySet()?.toList()
+                    .toString()}",
                 Toast.LENGTH_LONG
             ).show()
         }
