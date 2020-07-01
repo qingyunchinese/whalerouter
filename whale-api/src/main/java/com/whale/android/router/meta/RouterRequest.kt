@@ -50,6 +50,8 @@ class RouterRequest(val routerPath: String) {
 
     fun getAction(): String? = action
 
+    fun getActivityOptionsCompat(): ActivityOptionsCompat? = optionsCompat
+
     fun getRequestCode(): Int = requestCode
 
     fun withBundle(key: String, value: Bundle) = apply {

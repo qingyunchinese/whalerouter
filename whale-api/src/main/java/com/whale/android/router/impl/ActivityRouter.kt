@@ -3,8 +3,8 @@ package com.whale.android.router.impl
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
 import com.whale.android.router.Constants
 import com.whale.android.router.WhaleRouter
 import com.whale.android.router.callback.NavigateCallback
@@ -39,7 +39,12 @@ class ActivityRouter : RouterComponent {
             intent.setAction(action)
         }
         try {
-            startActivity(context, intent, routeRequest.getRequestCode())
+            startActivity(
+                context, intent, routeRequest.getRequestCode(),
+                activityOptionsCompat = routeRequest.getActivityOptionsCompat(),
+                enterAnim = routeRequest.getEnterAnim(),
+                exitAnim = routeRequest.getExitAnim()
+            )
         } catch (e: Exception) {
             e.printStackTrace()
             return
@@ -54,13 +59,18 @@ class ActivityRouter : RouterComponent {
         context: Context,
         intent: Intent,
         requestCode: Int,
-        extra: Bundle? = null,
+        activityOptionsCompat: ActivityOptionsCompat? = null,
         enterAnim: Int = -1,
         exitAnim: Int = -1
     ) {
         if (requestCode >= 0) {
             if (context is Activity) {
-                ActivityCompat.startActivityForResult(context, intent, requestCode, extra)
+                ActivityCompat.startActivityForResult(
+                    context,
+                    intent,
+                    requestCode,
+                    activityOptionsCompat?.toBundle()
+                )
             } else {
                 WhaleRouter.logger.error(
                     Constants.GLOBALTAG,
@@ -68,11 +78,14 @@ class ActivityRouter : RouterComponent {
                 )
             }
         } else {
-            ActivityCompat.startActivity(context, intent, extra)
+            ActivityCompat.startActivity(context, intent, activityOptionsCompat?.toBundle())
         }
 
         if (-1 != enterAnim && -1 != exitAnim && context is Activity) {
             context.overridePendingTransition(enterAnim, exitAnim)
+            WhaleRouter.logger.error(
+                Constants.GLOBALTAG, "overridePendingTransition"
+            )
         }
     }
 

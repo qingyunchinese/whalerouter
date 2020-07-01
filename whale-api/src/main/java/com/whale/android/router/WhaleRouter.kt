@@ -136,8 +136,8 @@ object WhaleRouter {
 
     private fun getRouterInterceptorChain(routerRequest: RouterRequest): RouterInterceptorChain {
         val routeInterceptors = mutableListOf<RouterInterceptor>()
-        routeInterceptors += RealRouterInterceptor()
         routeInterceptors.addAll(routerInterceptors())
+        routeInterceptors += RealRouterInterceptor()
         return RouterInterceptorChain(routeInterceptors, routerRequest, 0)
     }
 
