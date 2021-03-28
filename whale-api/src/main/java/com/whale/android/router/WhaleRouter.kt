@@ -9,6 +9,7 @@ import android.text.TextUtils
 import com.whale.android.router.callback.NavigateCallback
 import com.whale.android.router.impl.RouterAuthenticator
 import com.whale.android.router.impl.RouterComponentFactory
+import com.whale.android.router.interceptor.ContextInterceptor
 import com.whale.android.router.interceptor.RealRouterInterceptor
 import com.whale.android.router.interceptor.RouterInterceptor
 import com.whale.android.router.interceptor.RouterInterceptorChain
@@ -23,6 +24,7 @@ import com.whale.android.router.utils.Utils
 object WhaleRouter {
 
     private val routeInterceptors: MutableList<RouterInterceptor> = mutableListOf()
+    private var contextInterceptor: ContextInterceptor? = null
     private var authenticator: RouterAuthenticator = RouterAuthenticator.NONE
     @Volatile
     private var hasInit = false
@@ -91,15 +93,20 @@ object WhaleRouter {
         })
     }
 
+    fun bindContextInterceptor(listener: ContextInterceptor) {
+        contextInterceptor = listener
+    }
+
     private fun executeRouterRequest(
         context: Context?,
         routerRequest: RouterRequest,
         directlyOpen: Boolean = true,
         callback: NavigateCallback?
     ): RouterResponse {
-        val realContext = context ?: globeContext
         val routerInterceptorChain = getRouterInterceptorChain(routerRequest)
         val routerResponse = routerInterceptorChain.proceed(request = routerRequest)
+        val interceptorContext = contextInterceptor?.intercept(context, routerRequest,routerResponse)
+        val realContext = interceptorContext ?: globeContext
         when (routerResponse.statues) {
             RouterResponse.LOST -> {
                 routerResponse.routerPath().let {
@@ -131,16 +138,17 @@ object WhaleRouter {
     ) {
         val routerComponentType = routerResponse.routerType()!!
         val routerComponent = routerComponentFactory.getRouterComponent(routerComponentType)
-        routerComponent?.startComponent(context, routerResponse, directlyOpen,callback)
+        routerComponent?.startComponent(context, routerResponse, directlyOpen, callback)
     }
 
-    private fun getRouterInterceptorChain(routerRequest: RouterRequest): RouterInterceptorChain {
+    private fun getRouterInterceptorChain(
+        routerRequest: RouterRequest
+    ): RouterInterceptorChain {
         val routeInterceptors = mutableListOf<RouterInterceptor>()
         routeInterceptors.addAll(routerInterceptors())
         routeInterceptors += RealRouterInterceptor()
         return RouterInterceptorChain(routeInterceptors, routerRequest, 0)
     }
-
 
     private fun runInMainThread(runnable: Runnable) {
         if (Looper.getMainLooper().thread !== Thread.currentThread()) {
